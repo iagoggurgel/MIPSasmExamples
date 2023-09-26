@@ -9,29 +9,123 @@
 
 .data
 
-getValuesMsg: .asciiz "Write a number: "
+getValuesMsg: .asciiz "Write a number: " 
 resultMsg: .asciiz "Your result was: "
+sumWelcome: .asciiz "This is Sum Function"
+subWelcome: .asciiz "This is Subtract Function"
+mulWelcome: .asciiz "This is Multiply Function"
+powWelcome: .asciiz "This is Power Function"
+factWelcome: .asciiz "This is Factorial Function"
+
+calcWelcome: .asciiz "Calculator Menu"
+selOptMsg: .asciiz "Select your option below: "
+
+sumOption: .asciiz "0 - Sum"
+subOption: .asciiz "1 - Subtract"
+mulOption: .asciiz "2 - Multiply"
+powOption: .asciiz "3 - Power Function"
+factOption: .asciiz "4 - Factorial"
+endOption: .asciiz "5 - End Program"
+
+
+
 varA: .word 0
 varB: .word 0
 resultVar: .word 0
 
 .text
 
-main:
+Start:
 	
-	jal sumFunction
+	j mainMenu
+	
+	
+mainMenu:
+
 	jal printNewLine
-	jal subFunction
+	la $a0, calcWelcome
+	li $v0, 4
+	syscall
 	jal printNewLine
-	jal mtplyFunction
+	
+	la $a0, selOptMsg
+	li $v0, 4
+	syscall
 	jal printNewLine
-	jal powFunction
+	
+	la $a0, sumOption
+	li $v0, 4
+	syscall
 	jal printNewLine
-	jal factFunction
+	
+	la $a0, subOption
+	li $v0, 4
+	syscall
+	jal printNewLine
+	
+	la $a0, mulOption
+	li $v0, 4
+	syscall
+	jal printNewLine
+	
+	la $a0, powOption
+	li $v0, 4
+	syscall
+	jal printNewLine
+	
+	la $a0, factOption
+	li $v0, 4
+	syscall
+	jal printNewLine
+	
+	la $a0, endOption
+	li $v0, 4
+	syscall
+	jal printNewLine
+	
+	jal getVariableA
+	move $t0, $v0
+	beq $t0, 0, sumJmpLink
+	beq $t0, 1, subJmpLink
+	beq $t0, 2, mulJmpLink
+	beq $t0, 3, powJmpLink
+	beq $t0, 4, factJmpLink
+	beq $t0, 5, end
+	
 	j end
 	
+sumJmpLink:
+	jal sumFunction
+	j mainMenu
+	
+subJmpLink:
+	jal subFunction
+	j mainMenu
+	
+mulJmpLink:
+	jal mulFunction
+	j mainMenu
+	
+powJmpLink:
+	jal powFunction
+	j mainMenu
+	
+factJmpLink:
+	jal factFunction
+	j mainMenu
 	
 sumFunction:
+	
+	la $a0, sumWelcome
+	li $v0, 4
+	syscall
+	
+	
+	la $t7, push
+	jalr $t1, $t7 
+	jal printNewLine
+	la $t7, pop
+	jalr $t1, $t7
 	
 	la $t7, push
 	jalr $t1, $t7 
@@ -79,6 +173,19 @@ printResult:
 
 subFunction:
 	
+	
+	la $a0, subWelcome
+	li $v0, 4
+	syscall
+	
+	
+	la $t7, push
+	jalr $t1, $t7 
+	jal printNewLine
+	la $t7, pop
+	jalr $t1, $t7
+	
+	
 	la $t7, push
 	jalr $t1, $t7
 	jal getVariableA
@@ -92,7 +199,20 @@ subFunction:
 	jalr $t1, $t7
 	jr $ra
 	
-mtplyFunction:
+mulFunction:
+	
+	
+	la $a0, mulWelcome
+	li $v0, 4
+	syscall
+	
+	
+	la $t7, push
+	jalr $t1, $t7 
+	jal printNewLine
+	la $t7, pop
+	jalr $t1, $t7
+	
 	
 	la $t7, push
 	jalr $t1, $t7
@@ -108,6 +228,19 @@ mtplyFunction:
 	jr $ra
 	
 powFunction:
+	
+	
+	la $a0, powWelcome
+	li $v0, 4
+	syscall
+	
+	
+	la $t7, push
+	jalr $t1, $t7 
+	jal printNewLine
+	la $t7, pop
+	jalr $t1, $t7
+	
 	
 	la $t7, push
 	jalr $t1, $t7
@@ -138,6 +271,18 @@ endPow:
 	
 
 factFunction:
+	
+	la $a0, factWelcome
+	li $v0, 4
+	syscall
+	
+	
+	la $t7, push
+	jalr $t1, $t7 
+	jal printNewLine
+	la $t7, pop
+	jalr $t1, $t7
+	
 	
 	la $t7, push
 	jalr $t1, $t7
