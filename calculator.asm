@@ -10,23 +10,22 @@
 .data
 
 getValuesMsg: .asciiz "Write a number: " 
-resultMsg: .asciiz "Your result was: "
-sumWelcome: .asciiz "This is Sum Function"
-subWelcome: .asciiz "This is Subtract Function"
-mulWelcome: .asciiz "This is Multiply Function"
-powWelcome: .asciiz "This is Power Function"
-factWelcome: .asciiz "This is Factorial Function"
+resultMsg: .asciiz    "Your result was: "
+sumWelcome: .asciiz   "This is Sum Function"
+subWelcome: .asciiz   "This is Subtract Function"
+mulWelcome: .asciiz   "This is Multiply Function"
+powWelcome: .asciiz   "This is Power Function"
+factWelcome: .asciiz  "This is Factorial Function"
 
-calcWelcome: .asciiz "Calculator Menu"
-selOptMsg: .asciiz "Select your option below: "
+calcWelcome: .asciiz  "Calculator Menu"
+selOptMsg: .asciiz    "Select your option below: "
 
-sumOption: .asciiz "0 - Sum"
-subOption: .asciiz "1 - Subtract"
-mulOption: .asciiz "2 - Multiply"
-powOption: .asciiz "3 - Power Function"
-factOption: .asciiz "4 - Factorial"
-endOption: .asciiz "5 - End Program"
-
+sumOption: .asciiz    "0 - Sum"
+subOption: .asciiz    "1 - Subtract"
+mulOption: .asciiz    "2 - Multiply"
+powOption: .asciiz    "3 - Power Function"
+factOption: .asciiz   "4 - Factorial"
+endOption: .asciiz    "5 - End Program"
 
 
 varA: .word 0
@@ -34,6 +33,9 @@ varB: .word 0
 resultVar: .word 0
 
 .text
+.globl Start
+.globl end
+.globl mainMenu
 
 Start:
 	
@@ -96,24 +98,34 @@ mainMenu:
 	
 sumJmpLink:
 	jal sumFunction
+	li $v0, 12
+	syscall
 	j mainMenu
 	
 subJmpLink:
 	jal subFunction
+	li $v0, 12
+	syscall
 	j mainMenu
 	
 mulJmpLink:
 	jal mulFunction
+	li $v0, 12
+	syscall
 	j mainMenu
 	
 powJmpLink:
 	jal powFunction
+	li $v0, 12
+	syscall
 	j mainMenu
 	
 factJmpLink:
 	jal factFunction
+	li $v0, 12
+	syscall
 	j mainMenu
-	
+
 sumFunction:
 	
 	la $a0, sumWelcome
@@ -138,37 +150,6 @@ sumFunction:
 	jal printResult
 	la $t7, pop
 	jalr $t1, $t7
-	jr $ra
-	
-getVariableA:
-
-	la $a0, getValuesMsg
-	li $v0, 4
-	syscall
-	li $v0, 5
-	syscall
-	sw $v0, varA
-	jr $ra
-	
-getVariableB:
-	
-	la $a0, getValuesMsg
-	li $v0, 4
-	syscall
-	li $v0, 5
-	syscall
-	sw $v0, varB
-	jr $ra
-	
-printResult:
-	
-	lw $t0, resultVar
-	la $a0, resultMsg
-	li $v0, 4
-	syscall
-	move $a0, $t0
-	li $v0, 1
-	syscall
 	jr $ra
 
 subFunction:
@@ -311,17 +292,47 @@ factLoop:
 endFact:
 	jr $ra
 	
+			
+getVariableA:
+
+	la $a0, getValuesMsg
+	li $v0, 4
+	syscall
+	li $v0, 5
+	syscall
+	sw $v0, varA
+	jr $ra
+	
+getVariableB:
+	
+	la $a0, getValuesMsg
+	li $v0, 4
+	syscall
+	li $v0, 5
+	syscall
+	sw $v0, varB
+	jr $ra
+	
+printResult:
+	
+	lw $t0, resultVar
+	la $a0, resultMsg
+	li $v0, 4
+	syscall
+	move $a0, $t0
+	li $v0, 1
+	syscall
+	jr $ra
 	
 push:
 	
-	sw $ra, 0($sp)
 	add $sp, $sp, -4
+	sw $ra, 0($sp)
 	jr $t1
 
 pop:
-
-	add $sp, $sp, 4
 	lw $ra, 0($sp)
+	add $sp, $sp, 4
 	jr $t1
 	
 printNewLine:
